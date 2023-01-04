@@ -18,7 +18,7 @@ app.use(express.json());
 app.use('/api/v1/mail', mailRoutes);
 
 app.all("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../public/index.html"));
+    res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 const port = process.env.PORT || 3000;
