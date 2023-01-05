@@ -23,13 +23,41 @@ app.all("*", (req, res) => {
 
 const port = process.env.PORT || 3000;
 
-if (cluster.isMaster) {
+let server = null;
+
+/*if (cluster.isMaster) {
     for (let i = 0; i < numCPUs; i++) {
       // Create a worker
       cluster.fork();
     }
 }   else {
-    app.listen(port, () => {
+    server = app.listen(port, () => {
         console.log(`Server running on port ${port}`);
     });
+}*/
+
+if(process.env.NODE_ENV === 'production') {
+    if (cluster.isMaster) {
+        for (let i = 0; i < numCPUs; i++) {
+          // Create a worker
+          cluster.fork();
+        }
+    }   else {
+        app.listen(port, () => {
+            console.log(`Server running on port ${port}`);
+        });
+    }
+}else{
+    server = app.listen(port, () => {
+        console.log(`Server running on port ${port}`);
+    });
+}
+
+/*const server = app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+});*/
+
+module.exports = {
+    app,
+    server
 }

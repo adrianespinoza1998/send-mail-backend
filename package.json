@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "NODE_ENV=test jest --silent --detectOpenHandles",
+    "test:watch": "npm run test -- --watch"
   },
   "author": "Adrian Espinoza Arevalo",
   "license": "ISC",
