@@ -6,6 +6,7 @@ import 'dotenv/config';
 import path from 'path';
 
 import mailRoutes from './v1/routes/mailRoutes';
+import verificarHost from './middlewares/verificarHost';
 
 const numCPUs = cpus().length;
 
@@ -14,6 +15,7 @@ const app = express();
 app.use(express.static('public'));
 app.use(cors());
 app.use(express.json());
+app.use(verificarHost);
 
 app.use('/api/v1/mail', mailRoutes);
 
@@ -24,17 +26,6 @@ app.all("*", (req, res) => {
 const port = process.env.PORT || 3000;
 
 let server = null;
-
-/*if (cluster.isMaster) {
-    for (let i = 0; i < numCPUs; i++) {
-      // Create a worker
-      cluster.fork();
-    }
-}   else {
-    server = app.listen(port, () => {
-        console.log(`Server running on port ${port}`);
-    });
-}*/
 
 if(process.env.NODE_ENV === 'production') {
     if (cluster.isMaster) {
@@ -52,10 +43,6 @@ if(process.env.NODE_ENV === 'production') {
         console.log(`Server running on port ${port}`);
     });
 }
-
-/*const server = app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-});*/
 
 module.exports = {
     app,
