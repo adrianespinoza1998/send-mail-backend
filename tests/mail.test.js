@@ -16,8 +16,8 @@ describe('POST send mail', () => {
 
         expect(response.body.message).toBe('Email enviado');
     });
+});
 
-    afterAll(()=>{
-        server.close();
-    });
+afterAll(()=>{
+    server.close();
 });
