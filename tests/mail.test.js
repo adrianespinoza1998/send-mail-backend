@@ -12,7 +12,7 @@ describe('POST send mail', () => {
         .expect(200)
         .expect('Content-Type', /application\/json/);
 
-        const response = await api.get('/api/v1/mail').send(dataMailPrueba);
+        const response = await api.get('/api/v1/mail').post(dataMailPrueba);
 
         expect(response.body.message).toBe('Email enviado');
     });
