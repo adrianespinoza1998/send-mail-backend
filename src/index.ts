@@ -2,11 +2,17 @@ import express from 'express';
 import cors from 'cors';
 import cluster from "cluster";
 import { cpus } from "os";
-import 'dotenv/config';
+import * as dotenv from 'dotenv';
 import path from 'path';
 
 import mailRoutes from './v1/routes/mailRoutes';
 import verificarHost from './middlewares/verificarHost';
+
+if(process.env.NODE_ENV === 'production') {
+    dotenv.config({path: "./.env.production"});
+}else{
+    dotenv.config({path: "./.env.development"});
+}
 
 const numCPUs = cpus().length;
 
@@ -28,6 +34,7 @@ const port = process.env.PORT || 3000;
 let server = null;
 
 if(process.env.NODE_ENV === 'production') {
+
     if (cluster.isMaster) {
         for (let i = 0; i < numCPUs; i++) {
           // Create a worker
